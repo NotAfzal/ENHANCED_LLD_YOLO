@@ -1,63 +1,65 @@
-# LLD-YOLO: A Lightweight Low-Light Object Detector Trained on ExDark
+# LLD-YOLO: Lightweight Low-Light Object Detection on ExDark
 
-This repository contains the research implementation of **LLD-YOLO**, a lightweight YOLO-based architecture optimized for **low-light object detection** on the **ExDark** dataset. The project includes modular model components, training/evaluation pipelines, improved architectures, confusion matrices, and publication-ready results.
+This repository presents an implementation of **LLD-YOLO**, a lightweight YOLO-based model designed specifically for **object detection in low-light environments** using the **ExDark dataset**.  
+
+The project includes modular model components, training and evaluation pipelines, improved architectural variants, and visual results for performance analysis.
 
 ---
 
 ## Repository Structure
-- **config.py** — Experiment configuration  
-- **run.py / run_improved.py** — Training pipelines  
-- **compare_models.py** — Model comparison script  
-- **paper_table.py** — Generates research tables  
-- **evaluate.py** — Evaluation logic  
-- **data/** — Dataset loader, annotation parser, augmentations  
-- **models/** — Backbones, attention modules, detection heads  
-- **train/** — Losses, metrics, training engine  
-- **weights/** — Pretrained weights  
-- **results/** — JSON logs and visualizations  
+- **config.py** — Configuration for experiments  
+- **run.py / run_improved.py** — Training scripts  
+- **compare_models.py** — Script to compare model performance  
+- **paper_table.py** — Generates formatted result tables  
+- **evaluate.py** — Evaluation pipeline  
+- **data/** — Dataset loading, annotation parsing, augmentations  
+- **models/** — Backbones, enhancement modules, detection heads  
+- **train/** — Loss functions, metrics, training logic  
+- **weights/** — Saved model weights  
+- **results/** — Outputs, logs, and visualizations  
 
 ---
 
 ## ExDark Dataset Overview
 
-The **ExDark (Extreme Low-Light Dataset)** contains images captured exclusively in low-light conditions.
+The **ExDark (Extreme Low-Light Dataset)** consists of images captured in challenging lighting conditions.
 
 ### Key Characteristics
 - 7,363 low-light images  
-- 12 classes: Bicycle, Boat, Bottle, Bus, Car, Cat, Chair, Cup, Dog, Motorbike, People, Table  
-- Real-world night and low-illumination settings  
-- High noise, low contrast, strong shadows  
+- 12 object classes (e.g., Car, Dog, Bottle, People)  
+- Real-world night and dim-light environments  
+- High noise, low contrast, and shadows  
 
 ### Dataset Format
 - Images: `data/ExDark/images/`  
-- YOLO labels: `data/ExDark/labels/`  
+- Labels: `data/ExDark/labels/`  
 
-### Preprocessing Applied
+### Preprocessing Techniques
 - Gamma correction  
-- CLAHE  
+- CLAHE (contrast enhancement)  
 - Normalization  
-- Rotation/scale augmentation  
-- Noise-aware augmentations  
+- Geometric augmentations (rotation, scaling)  
+- Noise-aware transformations  
 
 ---
 
 ## Model Architecture
 
 ### Original LLD-YOLO
-- Lightweight backbone  
-- Basic feature fusion  
+- Lightweight backbone network  
+- Basic feature fusion strategy  
 - Standard YOLO detection head  
 
 ### Improved LLD-YOLO
 - Low-Light Enhancement Module (LL-EM)  
-- Enhanced backbone (improved convolution blocks)  
-- Optional DBB / Ghost / ELAN modules  
-- Improved CIoU/EIoU loss  
+- Enhanced backbone with improved convolution blocks  
+- Optional modules like DBB / Ghost / ELAN  
+- Improved bounding box loss (CIoU/EIoU)  
 
 ### Design Goals
-- Better low-light feature extraction  
-- Faster inference  
-- Higher stability during training  
+- Improve feature extraction in low-light conditions  
+- Maintain fast inference speed  
+- Ensure stable and efficient training  
 
 ---
 
@@ -70,57 +72,55 @@ The **ExDark (Extreme Low-Light Dataset)** contains images captured exclusively 
 | Original LLD-YOLO     | 0.423  | 0.219     | 0.61      | 0.54   | 0.57     | 42.7 | 23.4          |
 | Improved LLD-YOLO     | 0.487  | 0.261     | 0.67      | 0.59   | 0.62     | 45.1 | 21.3          |
 
-The improved model achieves a **+6.4% gain in mAP@50** and a **+4.2% gain in mAP@50–95**.
+The improved model achieves noticeable gains in detection accuracy while maintaining real-time performance.
 
 ---
 
 ## Visualizations
 
 ### Precision–Recall Curve
-![PR Curve](https://github.com/rishavafk/LLD_Research/raw/main/results/figures/pr_curve.png)
+![PR Curve](https://github.com/NotAfzal/ENHANCED_LLD_YOLO/raw/main/results/figures/pr_curve.png)
 
 ### Loss Curves
-![Loss Curves](https://github.com/rishavafk/LLD_Research/raw/main/results/figures/loss_curves.png)
+![Loss Curves](https://github.com/NotAfzal/ENHANCED_LLD_YOLO/raw/main/results/figures/loss_curves.png)
 
-### Metrics Barplot
-![Metrics Barplot](https://github.com/rishavafk/LLD_Research/raw/main/results/figures/metrics_barplot.png)
+### Metrics Comparison
+![Metrics Barplot](https://github.com/NotAfzal/ENHANCED_LLD_YOLO/raw/main/results/figures/metrics_barplot.png)
 
 ### Confusion Matrices
 
 #### Original Model
-![Confusion Matrix - Original](https://github.com/rishavafk/LLD_Research/raw/main/results/figures/confusion_original.png)
+![Confusion Matrix - Original](https://github.com/NotAfzal/ENHANCED_LLD_YOLO/raw/main/results/figures/confusion_original.png)
 
 #### Improved Model
-![Confusion Matrix - Improved](https://github.com/rishavafk/LLD_Research/raw/main/results/figures/confusion_improved.png)
+![Confusion Matrix - Improved](https://github.com/NotAfzal/ENHANCED_LLD_YOLO/raw/main/results/figures/confusion_improved.png)
 
 ---
 
-## Research Findings
+## Key Observations
 
-### 1. Accuracy & Detection Quality
-Improvements due to:
-- Stronger low-light feature extraction  
-- Reduced noise sensitivity  
-- Better bounding box regression (CIoU/EIoU)  
+### Detection Performance
+- Improved feature extraction in low-light scenarios  
+- Better handling of noise and poor illumination  
+- More accurate bounding box predictions  
 
-### 2. Training Stability
+### Training Behavior
 - Faster convergence  
-- Lower oscillation  
-- Smooth loss curves  
+- More stable loss trends  
+- Reduced fluctuations during training  
 
-### 3. Real-Time Performance
-- FPS: 42.7 → 45.1  
-- Latency: 23.4 ms → 21.3 ms  
-
----
-
-## Research Summary
-
-LLD-YOLO combines efficient backbone design with illumination-aware enhancement modules to significantly improve performance on low-light datasets like ExDark. The improved architecture delivers higher accuracy, better convergence, and faster inference while remaining lightweight and deployment-ready.
+### Efficiency
+- Improved FPS (42.7 → 45.1)  
+- Reduced latency (23.4 ms → 21.3 ms)  
 
 ---
 
-## Citation
+## Summary
 
-Use the following citation for the ExDark dataset:
+LLD-YOLO focuses on enhancing object detection performance under low-light conditions by combining efficient architecture design with illumination-aware modules. The improved version demonstrates better accuracy, stability, and speed, making it suitable for real-time applications in challenging environments.
 
+---
+
+## Authors
+- Afzal Asim  
+- Samadrito Chakraborty
